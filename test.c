@@ -9,38 +9,87 @@
  * 3. write array to new file
  */
 
-int main(int argc, char *argv[]) 
+// char *switchLowerAndUpper(char filename[], long int len)
+// {
+//   char new_str[len];
+//   int i = 0;
+//   FILE *fp;
+//   fp = fopen(filename, "r");
+//   char c = fgetc(fp);
+
+//   while (c != EOF)
+//   {
+//     if (isupper(c))
+//     {
+//       new_str[i] = tolower(c);
+//     }
+//     else if (islower(c))
+//     {
+//       new_str[i] = toupper(c);
+//     }
+//     else
+//     {
+//       new_str[i] = c;
+//     }
+//     c = fgetc(fp);
+//     i++;
+//   }
+//   fclose(fp);
+//   return new_str;
+// }
+
+long int getFileSize(char filename[])
 {
-  char FILENAME[] = "test.txt";
-  long int length_of_file = getFileSize(FILENAME);
-  printf("length of file is %ld bytes",length_of_file);
-
-  char processed_file[length_of_file + 1];
-  
-
-  return 0;
-}
-
-char switchLowerAndUpper(char filename[], long int len)
-{
-  char processed_str[len];
   FILE *fp;
   fp = fopen(filename, "r");
-  char c = fgetc(fp);
-  while (c != EOF) 
-  {
-
-  }
-  fclose(fp);
-}
-
-long int getFileSize(char filename[]) 
-{
-  FILE *fp;
-  fp = fopen(filename, "r"); 
   fseek(fp, 0L, SEEK_END);
   long int len = ftell(fp);
   // printf("length of file is %ld bytes",len);
   fclose(fp);
   return len;
+}
+char transformChar(char c)
+{
+  if (isupper(c))
+  {
+    return tolower(c);
+  }
+  else if (islower(c))
+  {
+    return toupper(c);
+  }
+  else
+  {
+    return c;
+  }
+}
+
+int main(int argc, char *argv[])
+{
+  char FILENAME[] = "test.txt";
+  long int length_of_file = getFileSize(FILENAME);
+  printf("length of file is %ld bytes\n", length_of_file);
+
+  char processed_file[length_of_file + 1];
+
+  int i = 0;
+  FILE *fp;
+  fp = fopen(FILENAME, "r");
+  char c;
+  while ((c=getc(fp)) != EOF)
+  {
+    processed_file[i] = transformChar(c);
+    i++;
+  }
+  fclose(fp);
+
+  // printf("processed str is: ");
+  // int l = sizeof(processed_file) / sizeof(processed_file[0]);
+  // for (int i = 0; i < l; i++)
+  // {
+  //   printf("%c", processed_file[i]);
+  // }
+  // printf("\n");
+
+  return 0;
 }
