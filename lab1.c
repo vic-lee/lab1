@@ -11,12 +11,10 @@
  * 
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
 
 /* Function declarations: do not change that, but you may add your own functions */
 void f1(int, int, int);
@@ -27,117 +25,115 @@ void f5(int, int);
 
 /* Add here function declarations of your own, if any. */
 
-
 /*********************************************************************************/
 
 /* 
  * Do  NOT change anything in main function 
  */
-int main(int argc, char * argv[])
+int main(int argc, char *argv[])
 {
   int option = 0;
   int i, j, k;
-  int * list;
-  
-  if(argc < 2 )
+  int *list;
+
+  if (argc < 2)
   {
-     fprintf(stderr,"Usage: lab1 num [input]\n");
-     fprintf(stderr,"num: 1, 2, 3, 4, or 5\n");
-     exit(1);
+    fprintf(stderr, "Usage: lab1 num [input]\n");
+    fprintf(stderr, "num: 1, 2, 3, 4, or 5\n");
+    exit(1);
   }
-  
+
   option = atoi(argv[1]);
-  
-  switch(option)
+
+  switch (option)
   {
-    case 1: if(argc != 5)
-	    {
-	      fprintf(stderr,"Usage: lab1 1 A B C\n");
-	      fprintf(stderr,"A, B, and C: Positive integers where A <= B and C < B \n");
-	      exit(1);
-	    }
-	    i = atoi(argv[2]);
-	    j = atoi(argv[3]);
-	    k = atoi(argv[4]);
-	   
-	    f1(i, j, k);
-	    
-	    break;
-	    
-	    
-    case 2: if(argc != 3)
-	    {
-	      fprintf(stderr,"Usage: lab1 2 filename\n");
-	      fprintf(stderr,"filename: the name of the file containing the characters\n");
-	      exit(1);
-	    }
-	    
-	    f2(argv[2]);
-	    
-	    break;
+  case 1:
+    if (argc != 5)
+    {
+      fprintf(stderr, "Usage: lab1 1 A B C\n");
+      fprintf(stderr, "A, B, and C: Positive integers where A <= B and C < B \n");
+      exit(1);
+    }
+    i = atoi(argv[2]);
+    j = atoi(argv[3]);
+    k = atoi(argv[4]);
 
-	    
-    case 3: if(argc != 4)
-	    {
-	      fprintf(stderr,"Usage: lab1 3 filename gen\n");
-	      fprintf(stderr,"filename: the name of the file containing the characters\n");
-	      fprintf(stderr,"gen: number of generations nonzero positive integer \n");
-	      exit(1);
-	    }
-	    
-	    i = atoi(argv[3]);
-	    f3(argv[2], i);
-	    
-	    break; 
-	    
-	    
-    case 4: if(argc != 3)
-	    {
-	      fprintf(stderr,"Usage: lab1 4 num\n");
-	      fprintf(stderr,"num: nonzero positive integer = number of elements in the array\n");
-	      exit(1);
-	    }
-	    
-	    i = atoi(argv[2]);
-	    if(!(list = (int *)malloc(i*sizeof(int))))
-	    {
-	      fprintf(stderr,"Cannot allocate an integer array of %d elements\n", i);
-	      exit(0);
-	    }
-	    for(j = 0; j < i; j++)
-	    {
-	      printf("enter element %d: ", j);
-	      scanf("%d",&list[j]);
-	    }
-	    
-	    f4(list, i);
-	    
-	    break;
+    f1(i, j, k);
 
-	    
-    case 5: if(argc != 4)
-	    {
-	      fprintf(stderr,"Usage: lab1 5 A B\n");
-	      fprintf(stderr,"A B: positive nonzero integers where A <= B\n");
-	      exit(1);
-	    } 
-	    
-	    i = atoi(argv[2]);
-	    j = atoi(argv[3]);
-	    
-	    f5(i, j);
-	    
-	    break;
+    break;
 
-	          
-	    
-    default: fprintf(stderr, "You entered an invalid option!\n");
-	     exit(1);
+  case 2:
+    if (argc != 3)
+    {
+      fprintf(stderr, "Usage: lab1 2 filename\n");
+      fprintf(stderr, "filename: the name of the file containing the characters\n");
+      exit(1);
+    }
+
+    f2(argv[2]);
+
+    break;
+
+  case 3:
+    if (argc != 4)
+    {
+      fprintf(stderr, "Usage: lab1 3 filename gen\n");
+      fprintf(stderr, "filename: the name of the file containing the characters\n");
+      fprintf(stderr, "gen: number of generations nonzero positive integer \n");
+      exit(1);
+    }
+
+    i = atoi(argv[3]);
+    f3(argv[2], i);
+
+    break;
+
+  case 4:
+    if (argc != 3)
+    {
+      fprintf(stderr, "Usage: lab1 4 num\n");
+      fprintf(stderr, "num: nonzero positive integer = number of elements in the array\n");
+      exit(1);
+    }
+
+    i = atoi(argv[2]);
+    if (!(list = (int *)malloc(i * sizeof(int))))
+    {
+      fprintf(stderr, "Cannot allocate an integer array of %d elements\n", i);
+      exit(0);
+    }
+    for (j = 0; j < i; j++)
+    {
+      printf("enter element %d: ", j);
+      scanf("%d", &list[j]);
+    }
+
+    f4(list, i);
+
+    break;
+
+  case 5:
+    if (argc != 4)
+    {
+      fprintf(stderr, "Usage: lab1 5 A B\n");
+      fprintf(stderr, "A B: positive nonzero integers where A <= B\n");
+      exit(1);
+    }
+
+    i = atoi(argv[2]);
+    j = atoi(argv[3]);
+
+    f5(i, j);
+
+    break;
+
+  default:
+    fprintf(stderr, "You entered an invalid option!\n");
+    exit(1);
   }
-  
+
   return 0;
 }
-
 
 /********************************************************************************************/
 /******* Start filling the blanks from here and add any extra functions you want, if any *****/
@@ -170,16 +166,14 @@ void f1(int start, int end, int incr)
 
   int current = start;
 
-  while (current <= end) 
+  while (current <= end)
   {
     printf("%d ", current);
     current += incr;
   }
 
   printf("%d\n", end);
-
 }
-
 
 /*********************************************************************************/
 
@@ -191,7 +185,7 @@ void f1(int start, int end, int incr)
  * Note1: filename can be any name, for example: info.txt or characters or data.info, ...
  * Note2: The given file will not contain anything but alphabets and spaces.
  */
-void f2(char * filename)
+void f2(char *filename)
 {
 
   /** 
@@ -210,31 +204,59 @@ void f2(char * filename)
    * END
    */
 
-int c;
-char *str;
-FILE *fp;
-fp = fopen(filename, "w");
-if (fp) 
-{
-  while ((c = getc(fp)) != EOF) 
+  int c;
+  // char *str;
+  FILE *fp;
+
+  fp = fopen(filename, "rw");
+  c = fgetc(fp);
+  while (c != EOF)
   {
-    char *cf;
-    if (isupper(c))
-    {
-      *cf = tolower(c);
-    }
-    else if (islower(c)) 
-    {
-      *cf = toupper(c);
-    }
-    strcat(str, *cf);
-    printf("%s\n", str);
+    printf("%c", c);
+    c = fgetc(fp);
   }
   fclose(fp);
-}
 
-}
+  printf("\n");
 
+
+  fp = fopen(filename, "rw");
+
+  if (fp)
+  {
+
+    c = fgetc(fp);
+    while (c != EOF)
+    {
+      char ch = 'c';
+      fprintf(fp, "%c", ch);
+      c = fgetc(fp);
+    }
+
+    // while ((c = getc(fp)) != EOF)
+    // {
+    //   if (isupper(c))
+    //   {
+    //     fprintf(fp, "%c", tolower(c));
+    //   }
+    //   else if (islower(c))
+    //   {
+    //     fprintf(fp, "%c", toupper(c));
+    //   }
+    //   fprintf(fp, "%s", " ");
+    // }
+    fclose(fp);
+
+    fp = fopen(filename, "rw");
+    c = fgetc(fp);
+    while (c != EOF)
+    {
+      printf("%c", c);
+      c = fgetc(fp);
+    }
+    fclose(fp);
+  }
+}
 
 /*********************************************************************************/
 
@@ -252,9 +274,6 @@ if (fp)
  */
 void f3(char *filename, int gen)
 {
-
-
-
 }
 
 /*********************************************************************************/
@@ -264,10 +283,8 @@ void f3(char *filename, int gen)
  * intput: an array of n integers
  * output: print on the screen the array sorted in reverse order followed by a new line
  */
-void f4(int * num, int n)
+void f4(int *num, int n)
 {
-  
-
 }
 
 /*********************************************************************************/
@@ -283,9 +300,6 @@ void f4(int * num, int n)
  */
 void f5(int a, int b)
 {
-
-
 }
 
 /*********************************************************************************/
-
