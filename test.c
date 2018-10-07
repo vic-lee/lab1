@@ -64,6 +64,14 @@ char transformChar(char c)
   }
 }
 
+char *concat(const char *s1, const char *s2)
+{
+  char *result = malloc(strlen(s1) + strlen(s2) + 1);
+  strcpy(result, s1);
+  strcat(result, s2);
+  return result;
+}
+
 int main(int argc, char *argv[])
 {
   char FILENAME[] = "test.txt";
@@ -76,20 +84,27 @@ int main(int argc, char *argv[])
   FILE *fp;
   fp = fopen(FILENAME, "r");
   char c;
-  while ((c=getc(fp)) != EOF)
+  while ((c = getc(fp)) != EOF)
   {
     processed_file[i] = transformChar(c);
     i++;
   }
   fclose(fp);
+  
+  char* NEWFILENAME = concat(FILENAME, ".reverse");
 
-  // printf("processed str is: ");
-  // int l = sizeof(processed_file) / sizeof(processed_file[0]);
-  // for (int i = 0; i < l; i++)
-  // {
-  //   printf("%c", processed_file[i]);
-  // }
-  // printf("\n");
+  fp = fopen(NEWFILENAME, "w");
 
+  int l = sizeof(processed_file) / sizeof(processed_file[0]);
+  for (int i = 0; i < l - 1; i++)
+  {
+    fprintf(fp, "%c", processed_file[i]);
+    // fprintf(fp, "%c", 'h');
+  }
+  printf("\n");
+
+  free(NEWFILENAME);
+
+  fclose(fp);
   return 0;
 }
