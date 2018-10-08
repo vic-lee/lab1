@@ -25,9 +25,12 @@ void f5(int, int);
 
 /* Add here function declarations of your own, if any. */
 
-long int getFileSize(char filename[]);
-char transformChar(char c);
+long int get_file_size(char filename[]);
+char transform_char(char c);
 char *concat(const char *s1, const char *s2);
+void print_arr(int A[], int size);
+void merge_sort(int arr[], int l, int r);
+void merge(int arr[], int l, int m, int r);
 
 /*********************************************************************************/
 
@@ -201,7 +204,7 @@ void f2(char *filename)
    */
 
   // char FILENAME[] = "test.txt";
-  long int length_of_file = getFileSize(filename);
+  long int length_of_file = get_file_size(filename);
   // printf("length of file is %ld bytes\n", length_of_file);
 
   // get processed string (lower to upper, upper to lower)
@@ -214,7 +217,7 @@ void f2(char *filename)
   char c;
   while ((c = getc(fp)) != EOF)
   {
-    processed_file[i] = transformChar(c);
+    processed_file[i] = transform_char(c);
     i++;
   }
   fclose(fp);
@@ -265,6 +268,8 @@ void f3(char *filename, int gen)
  */
 void f4(int *num, int n)
 {
+  merge_sort(num, 0, n - 1);
+  print_arr(num, n);
 }
 
 /*********************************************************************************/
@@ -287,7 +292,7 @@ void f5(int a, int b)
 
 // Helper functions
 
-long int getFileSize(char filename[])
+long int get_file_size(char filename[])
 {
   FILE *fp;
   fp = fopen(filename, "r");
@@ -297,20 +302,13 @@ long int getFileSize(char filename[])
   fclose(fp);
   return len;
 }
-char transformChar(char c)
+
+
+char transform_char(char c)
 {
-  if (isupper(c))
-  {
-    return tolower(c);
-  }
-  else if (islower(c))
-  {
-    return toupper(c);
-  }
-  else
-  {
-    return c;
-  }
+  if (isupper(c))       return tolower(c);
+  else if (islower(c))  return toupper(c);
+  else                  return c;
 }
 
 char *concat(const char *s1, const char *s2)
@@ -319,4 +317,71 @@ char *concat(const char *s1, const char *s2)
   strcpy(result, s1);
   strcat(result, s2);
   return result;
+}
+
+void print_arr(int A[], int size)
+{
+  for (int i = 0; i < size; i++) printf("%d ", A[i]);
+  printf("\n");
+}
+
+void merge_sort(int arr[], int l, int r)
+{
+  if (l < r)
+  {
+    int m = (l + r) / 2;
+    merge_sort(arr, l, m);
+    merge_sort(arr, m + 1, r);
+    merge(arr, l, m, r);
+  }
+}
+
+void merge(int arr[], int l, int m, int r)
+{
+  /**
+   * 1. create left and right arrays
+   * 2. copy data into left and right arrays
+   * 3. merge into original array, in sequence of decreasing size
+   */
+  int leftsize = m - l + 1;
+  int rightsize = r - m;
+  int L[leftsize], R[rightsize];
+  for (int i = 0; i < leftsize; i++)  L[i] = arr[l + i];
+  for (int j = 0; j < rightsize; j++) R[j] = arr[m + 1 + j];
+  int l_idx = 0, r_idx = 0, a_idx = l;
+  while (l_idx < leftsize && r_idx < rightsize)
+  {
+    /**
+     * for each increment in the original array,
+     * the slot takes in the larger value in either array
+     */
+    if (L[l_idx] >= R[r_idx])
+    {
+      arr[a_idx] = L[l_idx];
+      l_idx++;
+    }
+    else 
+    {
+      arr[a_idx] = R[r_idx];
+      r_idx++;
+    }
+    a_idx++;
+  }
+
+  /**
+   * For the remaining values in either left or right array, 
+   * add them to the original array sequentially
+   */
+  while (l_idx < leftsize)
+  {
+    arr[a_idx] = L[l_idx];
+    l_idx++;
+    a_idx++;
+  }
+  while(r_idx < rightsize) 
+  {
+    arr[a_idx] = R[r_idx];
+    r_idx++;
+    a_idx++;
+  }
 }
