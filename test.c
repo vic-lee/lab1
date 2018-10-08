@@ -57,6 +57,36 @@ int check_nb(char nb[], int p)
   return 0; //fallback
 }
 
+int check_all_nbs(int p) 
+{
+  /** 
+   * Check all neighbours
+   * if has neighbour, see what neighbour is
+   * count 1s
+   * if num1 == 2 || 3, return 1
+   * else return 0
+   */
+  return 0;
+}
+
+void file_to_arr(char* filename, int arr[])
+{
+  FILE* fp = fopen(filename, "r");
+  int i=0;
+  int num;
+  while(fscanf(fp, "%d", &num) > 0) {
+      arr[i] = num;
+      i++;
+  }
+  fclose(fp);
+}
+
+void print_arr(int A[], int size)
+{
+  for (int i = 0; i < size; i++) printf("%d ", A[i]);
+  printf("\n");
+}
+
 int main(int argc, char *argv[])
 {
   /** 
@@ -73,6 +103,12 @@ int main(int argc, char *argv[])
   // int GEN = 1;
   // int p = 5;
   // bool has_right_nb = ((p % 3) == 0);
+  
+  int MATRIX_SIZE = 9;
+
+  int nums[MATRIX_SIZE];
+  file_to_arr("testf3.in", nums);
+  
 
   printf("%d", check_nb("T", 3));
 
