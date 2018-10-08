@@ -31,6 +31,7 @@ char *concat(const char *s1, const char *s2);
 void print_arr(int A[], int size);
 void merge_sort(int arr[], int l, int r);
 void merge(int arr[], int l, int m, int r);
+int is_prime(int n);
 
 /*********************************************************************************/
 
@@ -288,6 +289,11 @@ void f4(int *num, int n)
  */
 void f5(int a, int b)
 {
+  for (int i = a; i < b + 1; i++) 
+  {
+    if (!is_prime(i)) printf("%d ", i);
+  }
+  printf("\n");
 }
 
 /*********************************************************************************/
@@ -434,11 +440,15 @@ void merge(int arr[], int l, int m, int r)
 
 /**
  * This function checks if a number is prime.
+ * input:   number to check
+ * output:  1 if number is prime, 0 if number is not prime
+ * note:    although 2 is a prime, according to description, 
+ *          0, 1, and 2 are assumed not to be prime
  */
 int is_prime(int n)
 {
-  if (n <= 1) return 0;
-  if (n == 2) return 1;
+  if (n <= 2) return 0;
+  // if (n == 2) return 1;
   for (int i = 2; i < n; i++) 
   {
     if (n % i == 0) return 0;
