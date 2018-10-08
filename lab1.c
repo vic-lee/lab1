@@ -268,6 +268,9 @@ void f3(char *filename, int gen)
  */
 void f4(int *num, int n)
 {
+  /**
+   * See merge_sort() for the solution.
+   */
   merge_sort(num, 0, n - 1);
   print_arr(num, n);
 }
@@ -292,6 +295,12 @@ void f5(int a, int b)
 
 // Helper functions
 
+/**
+ * This function returns a file's size.
+ * input:   filename
+ * output:  the size of this file (long int)
+ * note:    this function assumes this file exists.
+ */
 long int get_file_size(char filename[])
 {
   FILE *fp;
@@ -303,7 +312,14 @@ long int get_file_size(char filename[])
   return len;
 }
 
-
+/**
+ * This function transforms character to uppercase if it is lower case
+ * or to lowercase if it is upper case. 
+ * input:   character
+ * output:  lowercased form of a uppercase character, 
+ *          or uppercase form of a lowercase character
+ * note:    for a space character, this function returns a space character
+ */
 char transform_char(char c)
 {
   if (isupper(c))       return tolower(c);
@@ -311,6 +327,11 @@ char transform_char(char c)
   else                  return c;
 }
 
+/**
+ * This function concatinates 2 strings. 
+ * input: string1, string2
+ * output: a concatinated string: string1 + string2
+ */
 char *concat(const char *s1, const char *s2)
 {
   char *result = malloc(strlen(s1) + strlen(s2) + 1);
@@ -319,12 +340,25 @@ char *concat(const char *s1, const char *s2)
   return result;
 }
 
+/**
+ * This is a utility function for printing arrays. 
+ * input:   array, size of the array
+ * output:  array printed on screen
+ */
 void print_arr(int A[], int size)
 {
   for (int i = 0; i < size; i++) printf("%d ", A[i]);
   printf("\n");
 }
 
+/**
+ * This function merge sorts an int array recursively. 
+ * input:   array, left starting index, right starting index
+ * output:  returns nothing. sorts the array from the argument directly. 
+ * initial state: 
+ *        left starting index = 0; 
+ *        right starting index = array_len - 1; 
+ */
 void merge_sort(int arr[], int l, int r)
 {
   if (l < r)
@@ -336,6 +370,12 @@ void merge_sort(int arr[], int l, int r)
   }
 }
 
+/**
+ * This function merges left and right arrays in order of decreasing int size. 
+ * input: array, left starting index, middle index, right starting index;
+ * output: returns nothing. sorts array directly.
+ * 
+ */
 void merge(int arr[], int l, int m, int r)
 {
   /**
@@ -343,12 +383,18 @@ void merge(int arr[], int l, int m, int r)
    * 2. copy data into left and right arrays
    * 3. merge into original array, in sequence of decreasing size
    */
+
+  /* 1. create left and right arrays */
   int leftsize = m - l + 1;
   int rightsize = r - m;
   int L[leftsize], R[rightsize];
+
+  /* 2. copy data into left & right arrays */
   for (int i = 0; i < leftsize; i++)  L[i] = arr[l + i];
   for (int j = 0; j < rightsize; j++) R[j] = arr[m + 1 + j];
   int l_idx = 0, r_idx = 0, a_idx = l;
+
+  /* 3. merge into original array in sequence of decreasing size */
   while (l_idx < leftsize && r_idx < rightsize)
   {
     /**
@@ -384,4 +430,18 @@ void merge(int arr[], int l, int m, int r)
     r_idx++;
     a_idx++;
   }
+}   // end of merge()
+
+/**
+ * This function checks if a number is prime.
+ */
+int is_prime(int n)
+{
+  if (n <= 1) return 0;
+  if (n == 2) return 1;
+  for (int i = 2; i < n; i++) 
+  {
+    if (n % i == 0) return 0;
+  }
+  return 1;
 }
