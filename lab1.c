@@ -25,6 +25,10 @@ void f5(int, int);
 
 /* Add here function declarations of your own, if any. */
 
+long int getFileSize(char filename[]);
+char transformChar(char c);
+char *concat(const char *s1, const char *s2);
+
 /*********************************************************************************/
 
 /* 
@@ -187,75 +191,51 @@ void f1(int start, int end, int incr)
  */
 void f2(char *filename)
 {
-
-  /** 
+  /**
    * Algorithm: 
-   * 1. open file with read priviledge
-   * 2. if there's file and user has priviledge 
-   *    1. instantiate empty string: str
-   *    2. read each char in file 
-   *    3. for each char, there are 3 cases:
-   *      1. uppercase letter: append lowercase letter to str
-   *      2. lowercase letter: append uppercase letter to str
-   *      3. empty space:      append empty space to str
-   *    4. close file
-   *    5. create new file named filename + ".reverse"
-   *    6. write str to this new file
-   * END
+   * 1. get length of file
+   * 2. get transformed file
+   *  1. walk through file character by character
+   *  2. store transformed value (lower to upper, upper to lower)
+   * 3. write transformed value to new file
    */
 
-  int c;
-  // char *str;
-  FILE *fp;
+  // char FILENAME[] = "test.txt";
+  long int length_of_file = getFileSize(filename);
+  // printf("length of file is %ld bytes\n", length_of_file);
 
-  fp = fopen(filename, "rw");
-  c = fgetc(fp);
-  while (c != EOF)
+  // get processed string (lower to upper, upper to lower)
+
+  char processed_file[length_of_file + 1];
+
+  int i = 0;
+  FILE *fp;
+  fp = fopen(filename, "r");
+  char c;
+  while ((c = getc(fp)) != EOF)
   {
-    printf("%c", c);
-    c = fgetc(fp);
+    processed_file[i] = transformChar(c);
+    i++;
   }
   fclose(fp);
 
+  // write to new file
+
+  char *NEWFILENAME = concat(filename, ".reverse");
+
+  fp = fopen(NEWFILENAME, "w");
+
+  int l = sizeof(processed_file) / sizeof(processed_file[0]);
+  for (int i = 0; i < l - 1; i++)
+  {
+    fprintf(fp, "%c", processed_file[i]);
+    // fprintf(fp, "%c", 'h');
+  }
   printf("\n");
 
+  free(NEWFILENAME);
 
-  fp = fopen(filename, "rw");
-
-  if (fp)
-  {
-
-    c = fgetc(fp);
-    while (c != EOF)
-    {
-      char ch = 'c';
-      fprintf(fp, "%c", ch);
-      c = fgetc(fp);
-    }
-
-    // while ((c = getc(fp)) != EOF)
-    // {
-    //   if (isupper(c))
-    //   {
-    //     fprintf(fp, "%c", tolower(c));
-    //   }
-    //   else if (islower(c))
-    //   {
-    //     fprintf(fp, "%c", toupper(c));
-    //   }
-    //   fprintf(fp, "%s", " ");
-    // }
-    fclose(fp);
-
-    fp = fopen(filename, "rw");
-    c = fgetc(fp);
-    while (c != EOF)
-    {
-      printf("%c", c);
-      c = fgetc(fp);
-    }
-    fclose(fp);
-  }
+  fclose(fp);
 }
 
 /*********************************************************************************/
@@ -303,3 +283,40 @@ void f5(int a, int b)
 }
 
 /*********************************************************************************/
+
+
+// Helper functions
+
+long int getFileSize(char filename[])
+{
+  FILE *fp;
+  fp = fopen(filename, "r");
+  fseek(fp, 0L, SEEK_END);
+  long int len = ftell(fp);
+  // printf("length of file is %ld bytes",len);
+  fclose(fp);
+  return len;
+}
+char transformChar(char c)
+{
+  if (isupper(c))
+  {
+    return tolower(c);
+  }
+  else if (islower(c))
+  {
+    return toupper(c);
+  }
+  else
+  {
+    return c;
+  }
+}
+
+char *concat(const char *s1, const char *s2)
+{
+  char *result = malloc(strlen(s1) + strlen(s2) + 1);
+  strcpy(result, s1);
+  strcat(result, s2);
+  return result;
+}

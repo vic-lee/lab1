@@ -9,34 +9,6 @@
  * 3. write array to new file
  */
 
-// char *switchLowerAndUpper(char filename[], long int len)
-// {
-//   char new_str[len];
-//   int i = 0;
-//   FILE *fp;
-//   fp = fopen(filename, "r");
-//   char c = fgetc(fp);
-
-//   while (c != EOF)
-//   {
-//     if (isupper(c))
-//     {
-//       new_str[i] = tolower(c);
-//     }
-//     else if (islower(c))
-//     {
-//       new_str[i] = toupper(c);
-//     }
-//     else
-//     {
-//       new_str[i] = c;
-//     }
-//     c = fgetc(fp);
-//     i++;
-//   }
-//   fclose(fp);
-//   return new_str;
-// }
 
 long int getFileSize(char filename[])
 {
@@ -78,6 +50,8 @@ int main(int argc, char *argv[])
   long int length_of_file = getFileSize(FILENAME);
   printf("length of file is %ld bytes\n", length_of_file);
 
+  // get processed string (lower to upper, upper to lower)
+
   char processed_file[length_of_file + 1];
 
   int i = 0;
@@ -90,7 +64,9 @@ int main(int argc, char *argv[])
     i++;
   }
   fclose(fp);
-  
+
+  // write to new file
+
   char* NEWFILENAME = concat(FILENAME, ".reverse");
 
   fp = fopen(NEWFILENAME, "w");
@@ -106,5 +82,6 @@ int main(int argc, char *argv[])
   free(NEWFILENAME);
 
   fclose(fp);
+
   return 0;
 }
