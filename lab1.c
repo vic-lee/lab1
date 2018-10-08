@@ -281,12 +281,12 @@ void f3(char *filename, int gen)
   /*     assume index in + 1 form    */
   
   int MATRIX_SIZE = 9;
-  char FILENAME[] = "testf3.in";
-  int GEN = 2;
+  // char FILENAME[] = "testf3.in";
+  // int GEN = 2;
 
   int mtx[MATRIX_SIZE], newmtx[MATRIX_SIZE];
 
-  file_to_arr(FILENAME, mtx);
+  file_to_arr(filename, mtx);
 
   // printf("has neighbour %s at index %d: %d\n", "B", 1, has_nb("B", 1));
   // int checknum = 9;
@@ -296,12 +296,12 @@ void f3(char *filename, int gen)
   // print_matrix(mtx);
 
   
-  for(int i = 0; i < GEN; i++)
+  for(int i = 0; i < gen; i++)
   {
     // get new matrix after transformation
     for (int i=0; i<9; i++)
       newmtx[i] = check_all_nbs(mtx, i+1);
-    // printf("matrix in generation %d is:\n", i+1);
+    printf("matrix in generation %d is:\n", i+1);
     print_matrix(newmtx);
     // set initial state 'mtx' to 'newmtx';
     arrcpy(mtx, newmtx, 9);
@@ -331,7 +331,7 @@ void f4(int *num, int n)
  * input: two positive nonzero integers a and b where a <= b
  * output: print on the screen the non-prime numbers betweeb a and b, 
  *         including a and b themselves if they are non-prime. 
-*          0, 1, and 2 are assumed not to be prime, in case you encounter them.
+ *          0, 1, and 2 are assumed not to be prime, in case you encounter them.
  *         Leave a space between each two numbers.
  *         At the end, print a new line.
  */
@@ -374,9 +374,11 @@ long int get_file_size(char filename[])
 /**
  * This function transforms character to uppercase if it is lower case
  * or to lowercase if it is upper case. 
+ * 
  * input:   character
  * output:  lowercased form of a uppercase character, 
  *          or uppercase form of a lowercase character
+ * 
  * note:    for a space character, this function returns a space character
  */
 char transform_char(char c)
@@ -388,8 +390,9 @@ char transform_char(char c)
 
 /**
  * This function concatinates 2 strings. 
- * input: string1, string2
- * output: a concatinated string: string1 + string2
+ * 
+ * input:   string1, string2
+ * output:  a concatinated string: string1 + string2
  */
 char *concat(const char *s1, const char *s2)
 {
@@ -401,6 +404,7 @@ char *concat(const char *s1, const char *s2)
 
 /**
  * This is a utility function for printing arrays. 
+ * 
  * input:   array, size of the array
  * output:  array printed on screen
  */
@@ -412,8 +416,10 @@ void print_arr(int A[], int size)
 
 /**
  * This function merge sorts an int array recursively. 
+ * 
  * input:   array, left starting index, right starting index
  * output:  returns nothing. sorts the array from the argument directly. 
+ * 
  * initial state: 
  *        left starting index = 0; 
  *        right starting index = array_len - 1; 
@@ -431,8 +437,12 @@ void merge_sort(int arr[], int l, int r)
 
 /**
  * This function merges left and right arrays in order of decreasing int size. 
- * input: array, left starting index, middle index, right starting index;
- * output: returns nothing. sorts array directly.
+ * 
+ * input:     array, 
+ *            left starting index, 
+ *            middle index, 
+ *            right starting index;
+ * output:    returns nothing. sorts array directly.
  * 
  */
 void merge(int arr[], int l, int m, int r)
@@ -493,8 +503,10 @@ void merge(int arr[], int l, int m, int r)
 
 /**
  * This function checks if a number is prime.
+ * 
  * input:   number to check
  * output:  1 if number is prime, 0 if number is not prime
+ * 
  * note:    although 2 is a prime, according to description, 
  *          0, 1, and 2 are assumed not to be prime
  */
