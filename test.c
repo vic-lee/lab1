@@ -66,7 +66,7 @@ int check_nb(char nb[], int p, int nbp)
      */
     return within_bounds(nbp) && is_line_after(p, nbp);
   }
-  return 0;
+  return 0;   //fallback
 }
 
 int get_nb_idx(char nb[], int p)
@@ -141,7 +141,7 @@ int has_nb(char nb[], int p)
 int is_nb_one(int arr[], char nb[], int p)
 {
   int n = arr[get_nb_idx(nb, p) - 1];
-  printf("%s\t neighbour at index %d is %d\n", nb, p, n);
+  // printf("%s\t neighbour at index %d is %d\n", nb, p, n);
   if (n == 1)
     return 1;
   return 0;
@@ -153,7 +153,7 @@ int check_all_nbs(int arr[], int p)
    * Check all neighbours
    * if has neighbour, see what neighbour is
    * count 1s
-   * if num1 == 2 || 3, return 1
+   * if num_of_1s == 2 || 3, return 1
    * else return 0
    */
   int one_counter = 0;
@@ -175,7 +175,7 @@ int check_all_nbs(int arr[], int p)
   if (has_nb("B", p))
     one_counter += is_nb_one(arr, "B", p);
   
-  printf("one counter is %d\n", one_counter);
+  // printf("one counter is %d\n", one_counter);
 
   if (one_counter == 2 || one_counter == 3)
     return 1;
@@ -212,6 +212,22 @@ void print_matrix(int A[])
   // printf("\n");
 }
 
+/**
+ * Assume int array
+ * Assume destination array and original array has same length
+ */
+void arrcpy(int des[], int org[], int len)
+{
+  // printf("des before:\n");
+  // print_matrix(des);
+  for (int i = 0; i < len; i++)
+  {
+    des[i] = org[i];
+  }
+  // printf("des after:\n");
+  // print_matrix(des);
+}
+
 int main(int argc, char *argv[])
 {
   /** 
@@ -223,14 +239,10 @@ int main(int argc, char *argv[])
    */
 
   /*     assume index in + 1 form    */
-
-  // char FNAME[] = "testf3.in";
-  // int GEN = 1;
-  // int p = 5;
-  // bool has_right_nb = ((p % 3) == 0);
   
   int MATRIX_SIZE = 9;
   char FILENAME[] = "testf3.in";
+  int GEN = 2;
 
   int mtx[MATRIX_SIZE], newmtx[MATRIX_SIZE];
 
@@ -240,12 +252,21 @@ int main(int argc, char *argv[])
 
   // int checknum = 9;
   // printf("is one counter for cell '%d' 2 or 3? %d\n", checknum, check_all_nbs(mtx, checknum));
+  
+  printf("matrix in generation 1 is:\n");
+  print_matrix(mtx);
 
-  for (int i=0; i<9; i++)
-    newmtx[i] = check_all_nbs(mtx, i+1);
-
-  print_matrix(newmtx);
-
+  
+  for(int i = 0; i < GEN; i++)
+  {
+    // get new matrix after transformation
+    for (int i=0; i<9; i++)
+      newmtx[i] = check_all_nbs(mtx, i+1);
+    printf("matrix in generation %d is:\n", i+1);
+    print_matrix(newmtx);
+    // set initial state 'mtx' to 'newmtx';
+    arrcpy(mtx, newmtx, 9);
+  }
 
   return 0;
 }
