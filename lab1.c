@@ -177,11 +177,8 @@ void f1(int start, int end, int incr)
    *    2. increment current by incr
    * 3. finally, print end, then print a new line 
    * 
-   * END 
-   * 
    * Note: as lab1ref's output indicates, 
    * 1. when end can be written as start + n*incr, end is printed twice
-   * 2. there is no input validation in this function 
    */
 
   int current = start;
@@ -230,7 +227,7 @@ void f2(char *filename)
   char c;
   while ((c = getc(fp)) != EOF)
   {
-    processed_file[i] = transform_char(c);
+    processed_file[i] = transform_char(c);  
     i++;
   }
   fclose(fp);
@@ -270,40 +267,45 @@ void f2(char *filename)
  */
 void f3(char *filename, int gen)
 {
-   /** 
-   * 1. for each cell
-   * 2. check each of its neighbour 
-   *    1. if neighbour exists, check if it is 1
-   * 3. if total1 == 2 or total1 == 3,  cell = 1
-   * 4. else,                           cell = 0
+  /**
+   * Algorithm: 
+   * 1. for each generation
+   *    1. for each of its 9 cells
+   *        1. check if it has each kind of neighbour
+   *        2. if neighbour(s) exist, if they are 1
+   *        3. change cells with 2~3 neighbours of 1 to 1, other cells to 0
    */
 
-  /*     assume index in + 1 form    */
-  
+  /*     assume starting index = 1    */
+
+  // initialize
+
   int MATRIX_SIZE = 9;
-  // char FILENAME[] = "testf3.in";
-  // int GEN = 2;
-
   int mtx[MATRIX_SIZE], newmtx[MATRIX_SIZE];
-
   file_to_arr(filename, mtx);
 
-  // printf("has neighbour %s at index %d: %d\n", "B", 1, has_nb("B", 1));
-  // int checknum = 9;
-  // printf("is one counter for cell '%d' 2 or 3? %d\n", checknum, check_all_nbs(mtx, checknum));
-  
-  // printf("matrix in generation 1 is:\n");
-  // print_matrix(mtx);
-
-  
   for(int i = 0; i < gen; i++)
   {
-    // get new matrix after transformation
     for (int i=0; i<9; i++)
-      newmtx[i] = check_all_nbs(mtx, i+1);
+    {
+      /**
+       * for each cell, check if neighbour(s) exist and 
+       * get value of transformed matrix at this cell 
+       * based on the number of neighbours == 1
+       * 
+       * Note: check_all_nbs() assumes starting index = 1
+       */
+      newmtx[i] = check_all_nbs(mtx, i+1);    
+    }
     printf("matrix in generation %d is:\n", i+1);
+
+    // print transformed matrix
+
     print_matrix(newmtx);
-    // set initial state 'mtx' to 'newmtx';
+
+    // set initial state 'mtx' to 'newmtx' to 
+    // prepare for the next generation
+
     arrcpy(mtx, newmtx, 9);
   }
 }
@@ -355,6 +357,22 @@ void f5(int a, int b)
 // Helper functions
 
 /**
+ * This is a utility function for printing arrays. 
+ * 
+ * input:   array, size of the array
+ * output:  array printed on screen
+ */
+void print_arr(int A[], int size)
+{
+  for (int i = 0; i < size; i++) printf("%d ", A[i]);
+  printf("\n");
+}
+
+/*********************************************************************************/
+
+/*              Helper function for f2()              */
+
+/**
  * This function returns a file's size.
  * input:   filename
  * output:  the size of this file (long int)
@@ -402,17 +420,9 @@ char *concat(const char *s1, const char *s2)
   return result;
 }
 
-/**
- * This is a utility function for printing arrays. 
- * 
- * input:   array, size of the array
- * output:  array printed on screen
- */
-void print_arr(int A[], int size)
-{
-  for (int i = 0; i < size; i++) printf("%d ", A[i]);
-  printf("\n");
-}
+/*********************************************************************************/
+
+/*              Helper function for f4()              */
 
 /**
  * This function merge sorts an int array recursively. 
@@ -454,16 +464,19 @@ void merge(int arr[], int l, int m, int r)
    */
 
   /* 1. create left and right arrays */
+
   int leftsize = m - l + 1;
   int rightsize = r - m;
   int L[leftsize], R[rightsize];
 
   /* 2. copy data into left & right arrays */
+
   for (int i = 0; i < leftsize; i++)  L[i] = arr[l + i];
   for (int j = 0; j < rightsize; j++) R[j] = arr[m + 1 + j];
   int l_idx = 0, r_idx = 0, a_idx = l;
 
   /* 3. merge into original array in sequence of decreasing size */
+
   while (l_idx < leftsize && r_idx < rightsize)
   {
     /**
@@ -501,6 +514,10 @@ void merge(int arr[], int l, int m, int r)
   }
 }   // end of merge()
 
+/*********************************************************************************/
+
+/*              Helper function for f5()              */
+
 /**
  * This function checks if a number is prime.
  * 
@@ -520,6 +537,10 @@ int is_prime(int n)
   }
   return 1;
 }
+
+/*********************************************************************************/
+
+/*              Helper function for f3()              */
 
 /**
  * This function checks if an index is within the bounds 
@@ -547,7 +568,7 @@ int within_bounds(int p)
  * 2 9 8
  * 4 5 6
  * 
- * 9 & 8 are on the same line, while 9 & 2 is not. 
+ * 9 & 8 are on the same line, while 9 & 4 is not. 
  * 
  * input:   index1, index2
  * output:  1 if on the same line, 0 otherwise. 
@@ -588,7 +609,7 @@ int is_line_before(int p, int nbp)
  * 2 9 8
  * 4 5 6
  * 
- * 4 is on the line before 9, while 2 is not.
+ * 4 is on the line after 9, while 2 is not.
  * 
  * input:   index, index_to_check
  * output:  1 if index_to_check is on the line after index, 0 otherwise.
@@ -800,7 +821,10 @@ int has_nb(char nb[], int p)
  */
 int is_nb_one(int arr[], char nb[], int p)
 {
-  int n = arr[get_nb_idx(nb, p) - 1];
+  int n = arr[get_nb_idx(nb, p) - 1];   
+  // - 1 to adjust for the index returned from get_nb_idx(), 
+  // which assumes starting index of 1
+
   // printf("%s\t neighbour at index %d is %d\n", nb, p, n);
   if (n == 1)
     return 1;
@@ -903,6 +927,9 @@ void print_matrix(int A[])
  *          original_array
  *          length_of_both_arrays
  * 
+ * output:  each element in destination_array 
+ *          equals to that in original_array
+ * 
  * note: data in the original array will override data 
  *       in destination array.
  * note: this function assumes int array
@@ -920,3 +947,6 @@ void arrcpy(int des[], int org[], int len)
   // printf("des after:\n");
   // print_matrix(des);
 }
+
+/*********************************************************************************/
+
